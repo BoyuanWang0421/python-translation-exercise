@@ -13,7 +13,26 @@ def translate_sequence(rna_sequence, genetic_code):
     If `rna_sequence` is less than 3 bases long, or starts with a stop codon,
     an empty string is returned.
     """
-    pass
+    if rna_sequence:
+        seq=rna_sequence.upper()
+        if len(seq)>=3:
+            if seq[0:3]=='UAA' or seq[0:3]=='UAG' or seq[0:3]=='UGA':
+                return ''
+            else:
+                trans=''
+                remain=len(seq)%3
+                for i in range(0, (len(seq)-remain),3):
+                    codon=genetic_code[seq[i:i+3]]
+                    if codon == '*':
+                        break
+                    trans += codon 
+            return trans
+        else:
+            return ''
+    else:
+        return ''                
+
+import re
 
 def get_all_translations(rna_sequence, genetic_code):
     """Get a list of all amino acid sequences encoded by an RNA sequence.
@@ -30,7 +49,20 @@ def get_all_translations(rna_sequence, genetic_code):
     If no amino acids can be translated from `rna_sequence`, an empty list is
     returned.
     """
-    pass
+    if rna_sequence:
+        seq=rna_sequence.upper()
+        trans=[]
+        remain=len(seq)%3
+        start_code='AUG'   
+        start_sit=re.search(start_code, rna_sequence)
+        for sit in range(0,(len(seq)-remain),3):
+            if sit=='AUG':
+                for i in range (sit.end(),(len(seq)-remain),3):     
+                    codon=genetic_code[seq[i:i+3]]
+                    trans.append(coden)     
+            else:
+                return [] 
+        return trans
 
 def get_reverse(sequence):
     """Reverse orientation of `sequence`.
@@ -39,7 +71,12 @@ def get_reverse(sequence):
 
     If `sequence` is empty, an empty string is returned.
     """
-    pass
+    if sequence:
+        seq=sequence.upper()
+        reverse_seq=seq[::-1]
+        return reverse_seq
+    else:
+        return''
 
 def get_complement(sequence):
     """Get the complement of `sequence`.
@@ -48,8 +85,13 @@ def get_complement(sequence):
 
     If `sequence` is empty, an empty string is returned.
     """
-    pass
-
+    complementary={"A":"U","U":"A","G":"C","C":"G"}
+    if sequence:
+        seq=list(sequence.upper())
+        seq=[complementary[base] for base in seq]
+        return ''.join(seq)
+    else:
+        return''
 def reverse_and_complement(sequence):
     """Get the reversed and complemented form of `sequence`.
 
@@ -58,7 +100,12 @@ def reverse_and_complement(sequence):
 
     If `sequence` is empty, an empty string is returned.
     """
-    pass
+    if sequence:
+        revseq=get_reverse(sequence)
+        revcompseq=get_complement(revseq)
+        return revcompseq
+    else:
+        return''
 
 def get_longest_peptide(rna_sequence, genetic_code):
     """Get the longest peptide encoded by an RNA sequence.
@@ -71,7 +118,7 @@ def get_longest_peptide(rna_sequence, genetic_code):
     If no amino acids can be translated from `rna_sequence` nor its reverse and
     complement, an empty string is returned.
     """
-    pass
+    pass 
 
 
 if __name__ == '__main__':
